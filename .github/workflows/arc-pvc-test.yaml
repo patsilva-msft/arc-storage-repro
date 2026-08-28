@@ -8,16 +8,11 @@ jobs:
     runs-on: arc-storage-repro
 
     steps:
-      - name: Check environment
-        run: |
-          hostname
-          df -h
-          mount
+      - run: |
+          mkdir -p /home/runner/_work/test
+          dd if=/dev/zero \
+             of=/home/runner/_work/test/file.bin \
+             bs=1M count=500
 
-      - name: Generate workload
-        run: |
-          dd if=/dev/zero of=/tmp/testfile bs=1M count=1024
-          sync
+          sleep 300
 
-      - name: Keep runner alive
-        run: sleep 300
