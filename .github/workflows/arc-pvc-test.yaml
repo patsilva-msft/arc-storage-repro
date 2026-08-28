@@ -1,0 +1,23 @@
+name: ARC PVC Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  runner-load:
+    runs-on: arc-storage-repro
+
+    steps:
+      - name: Check environment
+        run: |
+          hostname
+          df -h
+          mount
+
+      - name: Generate workload
+        run: |
+          dd if=/dev/zero of=/tmp/testfile bs=1M count=1024
+          sync
+
+      - name: Keep runner alive
+        run: sleep 300

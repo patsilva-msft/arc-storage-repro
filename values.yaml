@@ -1,0 +1,21 @@
+githubConfigUrl: "https://github.com/patsilva-msft/arc-storage-repro"
+
+githubConfigSecret: github-config-secret
+
+runnerScaleSetName: "arc-storage-repro"
+
+maxRunners: 20
+minRunners: 0
+
+containerMode:
+  type: kubernetes
+
+  kubernetesModeWorkVolumeClaim:
+    accessModes:
+      - ReadWriteOnce
+
+    storageClassName: managed-csi-premium
+
+    resources:
+      requests:
+        storage: 16Gi

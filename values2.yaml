@@ -1,0 +1,25 @@
+githubConfigUrl: "https://github.com/patsilva-msft/arc-storage-repro"
+
+githubConfigSecret: github-config-secret
+
+runnerScaleSetName: arc-storage-repro
+
+controllerServiceAccount:
+  namespace: arc-system
+  name: arc-gha-rs-controller
+resourceMeta:
+  noPermissionServiceAccount: {}
+
+maxRunners: 20
+minRunners: 0
+
+containerMode:
+  type: kubernetes
+
+  kubernetesModeWorkVolumeClaim:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: managed-csi-premium
+    resources:
+      requests:
+        storage: 16Gi
