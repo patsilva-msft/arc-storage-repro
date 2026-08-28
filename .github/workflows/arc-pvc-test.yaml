@@ -1,4 +1,4 @@
-name: ARC PVC Test
+name: ARC PVC Stress Test
 
 on:
   workflow_dispatch:
@@ -7,12 +7,40 @@ jobs:
   runner-load:
     runs-on: arc-storage-repro
 
+    strategy:
+      fail-fast: false
+      max-parallel: 15
+      matrix:
+        worker:
+          - 01
+          - 02
+          - 03
+          - 04
+          - 05
+          - 06
+          - 07
+          - 08
+          - 09
+          - 10
+          - 11
+          - 12
+          - 13
+          - 14
+          - 15
+
     steps:
-      - run: |
-          mkdir -p /home/runner/_work/test
+      - name: Create workload
+        run: |
+          echo "worker=${{ matrix.worker }}"
+
+          mkdir -p ${GITHUB_WORKSPACE}/test
+
           dd if=/dev/zero \
-             of=/home/runner/_work/test/file.bin \
-             bs=1M count=500
+             of=${GITHUB_WORKSPACE}/test/blob.bin \
+             bs=1M count=1024
 
-          sleep 300
+          sync
 
+      - name: Keep runner alive
+        run: |
+          sleep 600
