@@ -29,18 +29,11 @@ jobs:
           - 15
 
     steps:
-      - name: Create workload
+      - name: Exercise work volume briefly
+        shell: bash
         run: |
-          echo "worker=${{ matrix.worker }}"
-
-          mkdir -p ${GITHUB_WORKSPACE}/test
-
-          dd if=/dev/zero \
-             of=${GITHUB_WORKSPACE}/test/blob.bin \
-             bs=1M count=1024
-
+          printf 'worker=%s time=%s\n' \
+            '${{ matrix.worker }}' "$(date --iso-8601=ns)" \
+            > "${GITHUB_WORKSPACE}/probe.txt"
           sync
-
-      - name: Keep runner alive
-        run: |
-          sleep 600
+          sleep $((2 + RANDOM % 19))
